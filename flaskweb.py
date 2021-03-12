@@ -1,7 +1,5 @@
 from flask import request, abort, current_app as app
 from flask import Flask
-import re
-import time
 import pickle
 import numpy as np
 import requests
