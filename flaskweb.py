@@ -1,20 +1,13 @@
 from flask import request, abort, current_app as app
 from flask import Flask
 import re
-import os
 import time
 import pickle
 import numpy as np
 import requests
 from sklearn.preprocessing import Normalizer
 
-line_seen = set()
 response = 0
-check = 0
-ip_timelog = []
-ip_ban_list = []
-ip_whitelist = [('127.0.0.1')]
-ipr = []
 PLAYER_NAME = []
 returned_data = []
 newplayername = []
@@ -46,58 +39,10 @@ for name in player_name:
 
 app = Flask(__name__)
 
-@app.before_request
-def block_method(r = 0):
-    ip = request.environ.get('REMOTE_ADDR')
-    
-    if ip in ipr:
-        r = ipr.index(ip)
-        check = 1
-    else:
-        ip_timelog.append([ip,time.time()])
-        check = 0
-        ipr.append(ip)
-    
-    last_time = ip_timelog[r][1]
-    response = time.time()-last_time
-    ip_timelog[r][1] = time.time()
-    
-    if check == 1:
-        if response < 1:
-            if ip not in ip_whitelist:
-                if ip in ip_ban_list:
-                    abort(403)
-                else:
-                    ip_ban_list.append(ip)
-                    abort(403)
-        else:
-            if ip not in ip_whitelist:
-                if ip in ip_ban_list:
-                    abort(403)
-    print("Response Time: ", response)
-    print("Timelog: ", ip_timelog)
-    print("IP REC: ", ipr)
-    print("Banlist: ", ip_ban_list)
-    print("Whitelist: ", ip_whitelist)
-
 @app.route('/', methods =['POST'])
 def post():
     if request.method == 'POST':
-        print(request.data)
-        datastr = str(request.data)
-        dataclean = datastr[1:].replace('\\r', '').strip("'[]").replace(', ','\n')
-        with open("INPUT.txt", "wt") as SERVERDATARAW:
-            SERVERDATARAW.write(dataclean)
-        SERVERDATARAW.close()
-        SERVERDATARAW = open("TempINPUT.txt", "rt")
-        with open("PLAYERGATHERDATA2.txt", "a") as SERVERDATA:
-            for line in SERVERDATARAW:
-                if len(line)<13:
-                    L = re.findall('[a-zA-Z0-9_-] *', line)
-                    line = ''.join(map(str, L))
-                    if line not in line_seen:
-                        SERVERDATA.write(line + '\n')
-                        line_seen.add(line)
+        print("Someone attempted to post")
     return 
         
 @app.route('/user/<user>', methods =['GET'])
@@ -184,6 +129,4 @@ def getResponse(osrsknn_predict):
     return osrsknn_predict
 
 if __name__ == '__main__':
-    app.run(port="5000")
-
-
+    app.run(debug=True)
