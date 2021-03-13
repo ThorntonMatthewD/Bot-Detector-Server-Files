@@ -47,5 +47,5 @@ jobs:
         run: |
           source venv/bin/activate
           cd /home/runner/_work/Bot-Detector-Server-Files/Bot-Detector-Server-Files
-          gunicorn --bind 0.0.0.0:5000 -w 3 flaskweb:app
+          gunicorn --bind 0.0.0.0:5000 -w 3 -t 60 flaskweb:app
   
