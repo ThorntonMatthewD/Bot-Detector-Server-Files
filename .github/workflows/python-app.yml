@@ -21,7 +21,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y python3-pip python3-venv
         python3 -m pip install --upgrade pip
-        pip3 install flake8 pytest wheel
+        pip3 install flake8 pytest wheel flaskr-1.0.0-py3-none-any.whl
         
     - name: Lint with flake8
       run: |
@@ -39,7 +39,6 @@ jobs:
           rm -rf venv
           python3 -m venv venv
           source venv/bin/activate
-          python3 setup.py bdist_wheel
           if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
           
  Start-server:
