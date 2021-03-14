@@ -21,7 +21,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y python3-pip python3-venv
         python3 -m pip install --upgrade pip
-        pip3 install flake8 pytest wheel flaskr-1.0.0-py3-none-any.whl
+        pip3 install flake8 pytest wheel
         
     - name: Lint with flake8
       run: |
@@ -49,5 +49,6 @@ jobs:
         run: |
           source venv/bin/activate
           cd /home/runner/_work/Bot-Detector-Server-Files/Bot-Detector-Server-Files
-          gunicorn --bind 0.0.0.0:5000 -w 3 -t 60 flaskweb:app
+          screen -d -m sh start-server.sh
+          
   
