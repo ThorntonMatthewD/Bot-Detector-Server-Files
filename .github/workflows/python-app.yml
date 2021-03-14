@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3-pip python3-venv screen
+        sudo apt-get install -y python3-pip python3-venv screen ufw
         python3 -m pip install --upgrade pip
         pip3 install flake8 pytest wheel
         sudo ufw allow 5000/tcp
